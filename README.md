@@ -16,7 +16,7 @@ An addon for parallel rendering for video sequencer in blender.
 
 **Intro**
 
-The current situation as far as the Blender Video Sequencer is concerned, is that it is awesome, but is extremely slow in rendering as it utilizes only one thread. Even if you have 16 cores, it does not help. VS is ok for small videos but the render times can go to many hours for long videos. So far many solutions were offered to solve this issue outside the main Blender dev community. Many use the splitting method, and this addon uses the same approach. I tried some, but unfortunately none worked well with the new versions (or on Linux). This addon is simple and very specific to my own needs. Hopefully it will be useful for you. It can be adapted for Windows etc by making some minor changes.
+The current situation as far as the Blender Video Sequencer is concerned, is that it is awesome, but is extremely slow in rendering as it utilizes only one thread. Even if you have 16 cores, it does not help. VS is ok for small videos but the render times can go to many hours for long videos. So far many solutions were offered to solve this issue outside the main Blender dev community. I tried some, but unfortunately none worked well with the new versions (or on Linux). Many use the splitting method, and this addon uses the same approach. This addon is simple and very specific to my own needs. Hopefully it will be useful for you. It can be adapted for Windows etc by making some minor changes.
 
 **Intro Video**
 
