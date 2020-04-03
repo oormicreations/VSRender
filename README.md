@@ -53,6 +53,7 @@ When the render is over, click the **Join Parts** button to join them. This is u
 * If you find that the scripts are not executing, try setting the permissions. Linux Mint automatically sets the permissions somehow.
 * It uses **gnome-terminal** to display the output of scripts. If you use some other terminal, please edit the code suitably.
 * It uses the default 0 padding in frame numbers. If you changed it, it won't recognize the file part renders to join.
+* **Always save your stuff!**
 
 
 **Misc Info**
