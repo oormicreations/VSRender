@@ -37,7 +37,7 @@ Click the **Split** button. The frame range is split into specified parts. The f
 
 Click the **Parallel Render** button to start rendering all parts at once.
 
-Tick the **Open Terminal** check box if you like to see the progress of renders in terminal windows. If it causes problems try unchecking it. (_Note: You can stop the renders by killing the process from System Monitor or from command line_)
+Before you click render, tick the **Open Terminal** check box if you like to see the progress of renders in terminal windows. If it causes problems try unchecking it. (_Note: You can stop the renders by killing the process from System Monitor or from command line_)
 
 When the render is over, click the **Join Parts** button to join them. This is useful when you have rendered videos not image sequences. It uses ffmpeg to concatenate the parts. So it must be installed to use this feature. You can join them via cli also.
 
@@ -46,7 +46,34 @@ When the render is over, click the **Join Parts** button to join them. This is u
 **Help | Source | Updates** brings you to this page on GitHub.
 
 
+**Known Issues**
 
+* There is minimum error check at this point.
+* It uses bash scripts so is sensitive to your Linux flavor or settings.
+* If you find that the scripts are not executing, try setting the permissions. Linux Mint automatically sets the permissions somehow.
+* It uses **gnome-terminal** to display the output of scripts. If you use some other terminal, please edit the code suitably.
+* It uses the default 0 padding in frame numbers. If you changed it, it won't recognize the file part renders to join.
+
+
+**Misc Info**
+
+This plugin has been released under MIT license, which means it is free for any kind of use and modification, but has no warranties or liabilities. Please read the license before you download and use it. 
+
+**About**
+
+
+---
+
+A FOSS Project by Oormi Creations
+
+http://oormi.in
+
+oormicreations@gmail.com
+
+
+![logo](https://oormi.in/software/cbp/images/OormiLogo.png)
+
+March 2020.
 
 
 
