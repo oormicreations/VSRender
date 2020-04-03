@@ -4,13 +4,13 @@ An addon for parallel rendering for video sequencer in blender.
 
 **Dependencies**
 
-Ffmpeg must be installed and should be executable from anywhere.
-Linux (This addon was tested on Linus Mint 19). Does not work on any other OS out of the box.
-Blender 2.80 or above (This addon was test in Blender 2.82)
+* Ffmpeg must be installed and should be executable from anywhere.
+* Linux (_This addon was tested on Linus Mint 19_). Does not work on any other OS out of the box.
+* Blender 2.80 or above (_This addon was tested in Blender 2.82_)
 
 **Features**
 
-* Splits the render into many parts
+* Splits the video sequencer render into many parts
 * Renders the parts separately in background, utilizing all cores on your machine
 * Joins the parts (if needed) using Ffmpeg
 
@@ -33,11 +33,17 @@ You will find the UI in the Video Sequencer window when you press N.
 Once you finish editing your awesome video. Click the the **VSRender tab** in the "N" panel. 
 Set the number of **Parts**. It can be any number but will be typically the number of cores you have in your machine.
 
-Click the **Split** button. The frame range is split into specified parts. The frame count of each part is shown below this button. The last part frame count includes the remaining frames. This action creates shell scripts that contain he command for launching Blender in background with render arguments for specified frames.
+Click the **Split** button. The frame range is split into specified parts. The frame count of each part is shown below this button. The last part frame count includes the remaining frames. This action creates shell scripts that contain the command for launching Blender in background with render arguments for specified frames.
 
 Click the **Parallel Render** button to start rendering all parts at once.
 
 Tick the **Open Terminal** check box if you like to see the progress of renders in terminal windows. If it causes problems try unchecking it. (_Note: You can stop the renders by killing the process from System Monitor or from command line_)
+
+When the render is over, click the **Join Parts** button to join them. This is useful when you have rendered videos not image sequences. It uses ffmpeg to concatenate the parts. So it must be installed to use this feature. You can join them via cli also.
+
+**Out File Name** is the name of the joined video. You can use a custom ffmpeg **Command** to join them. The default **Extension** is mkv, but you can change it here before joining the parts.
+
+**Help | Source | Updates** brings you to this page on GitHub.
 
 
 
