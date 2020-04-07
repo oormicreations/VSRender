@@ -6,7 +6,7 @@ An addon for parallel rendering for video sequencer in blender.
 
 * Linux (_This addon was tested on Linus Mint 19_). Does not work on any other OS out of the box.
 * Blender 2.80 or above (_This addon was tested in Blender 2.82_)
-* [Optional] Ffmpeg must be installed and should be executable from anywhere in order to use the join video parts feature.
+* [Optional] Ffmpeg must be installed and should be executable from anywhere in order to use the join video parts feature. (_This addon was tested with ffmpeg 3.4.6_)
 
 **Features**
 
