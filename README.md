@@ -20,11 +20,13 @@ The current situation as far as the Blender Video Sequencer is concerned, is tha
 
 **Intro Video**
 
-Coming Soon
+https://youtu.be/Y73kQxqMpew
 
-**Installtion**
+**Download and Installtion**
 
 Download the VSRender.py file from this repository. Or get the zip file from the releases page.
+https://github.com/oormicreations/VSRender/releases
+
 Install from the Blender Menu > Edit > Preferences > Add-ons > Install. Pick this file. Enable this addon.
 You will find the UI in the Video Sequencer window when you press N.
 
