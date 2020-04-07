@@ -35,7 +35,7 @@ Set the number of **Parts**. It can be any number but will be typically the numb
 
 Click the **Split** button. The frame range is split into specified parts. The frame count of each part is shown below this button. The last part frame count includes the remaining frames. This action creates shell scripts that contain the command for launching Blender in background with render arguments for specified frames.
 
-Click the **Parallel Render** button to start rendering all parts at once.
+Click the **Parallel Render** button to start rendering all parts at once. Make sure that you have set a output render path in blender render settings in Output tab in properties window. If you wish to use the built in Join function, make sure that it does not contain a prefix for the file names or zero padding characters.
 
 Before you click render, tick the **Open Terminal** check box if you like to see the progress of renders in terminal windows. If it causes problems try unchecking it. (_Note: You can stop the renders by killing the process from System Monitor or from command line_)
 
@@ -53,6 +53,7 @@ When the render is over, click the **Join Parts** button to join them. This is u
 * If you find that the scripts are not executing, try setting the permissions. Linux Mint automatically sets the permissions somehow.
 * It uses **gnome-terminal** to display the output of scripts. If you use some other terminal, please edit the code suitably.
 * It uses the default 0 padding in frame numbers. If you changed it, it won't recognize the file part renders to join.
+* It will not recognize the parts if a file name prefix was set in the output render path, or if zero padding characters (e.g. ####) are set there.
 * **Always save your stuff!**
 
 
