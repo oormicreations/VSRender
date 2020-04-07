@@ -6,7 +6,7 @@ bl_info = {
     "name": "VS Render",
     "description": "VS Parallel Render by Oormi Creations",
     "author": "Oormi Creations",
-    "version": (0, 1, 0),
+    "version": (0, 1, 1),
     "blender": (2, 80, 0),
     "location": "Video Sequencer > VS Render",
     "warning": "", # used for warning icon and text in addons panel
@@ -120,14 +120,16 @@ def splitparts(nparts, tool):
     blendexe = blendexe.replace(" ", "\ ")
     blendfilepath = blendfilepath.replace(" ", "\ ")
     
+    outpath =   bpy.context.scene.render.filepath
+    
     shscript = "#!/bin/bash\n\
 echo \"" + blendexe + "\"\n\
-x=\"" + blendfilepath + " -o // -x 1 -s %&#1 -e %&#2 -a\"\n\
+x=\"" + blendfilepath + " -x 1 -s %&#1 -e %&#2 -a\"\n\
 echo $x\n\
 eval \"" + blendexe + "\" -b \"$x\"\n\
 echo \"VSE Render : Part %&#3 Render Done\""
 
-    outpath =   bpy.context.scene.render.filepath
+    
     printconsole(outpath, "Saving sh scripts")
     
     for n in range(0, len(sframes)):    
@@ -276,7 +278,7 @@ class CCC_OT_CConCat(bpy.types.Operator):
     
 class OBJECT_PT_VSPanel(bpy.types.Panel):
 
-    bl_label = "VS Render 0.1.0"
+    bl_label = "VS Render 0.1.1"
     bl_idname = "OBJECT_PT_VS_Panel2"
     bl_category = "VS Render"
     bl_space_type = 'SEQUENCE_EDITOR'
