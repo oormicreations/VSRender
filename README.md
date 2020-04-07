@@ -2,6 +2,8 @@
 
 An addon for parallel rendering for video sequencer in blender.
 
+---
+
 **Requirements**
 
 * Linux (_This addon was tested on Linus Mint 19_). Does not work on any other OS out of the box.
@@ -37,7 +39,7 @@ Set the number of **Parts**. It can be any number but will be typically the numb
 
 Click the **Split** button. The frame range is split into specified parts. The frame count of each part is shown below this button. The last part frame count includes the remaining frames. This action creates shell scripts that contain the command for launching Blender in background with render arguments for specified frames.
 
-Click the **Parallel Render** button to start rendering all parts at once. Make sure that you have set a output render path in blender render settings in Output tab in properties window. If you wish to use the built in Join function, make sure that it does not contain a prefix for the file names or zero padding characters.
+Click the **Parallel Render** button to start rendering all parts at once. Make sure that you have set a output render path in blender render settings in Output tab in properties window. If you wish to use the built in Join function, make sure that it does **not** contain a prefix for the file names or zero padding characters.
 
 Before you click render, tick the **Open Terminal** check box if you like to see the progress of renders in terminal windows. If it causes problems try unchecking it. (_Note: You can stop the renders by killing the process from System Monitor or from command line_)
 
@@ -65,12 +67,11 @@ This plugin has been released under MIT license, which means it is free for any 
 
 **About**
 
-
----
-
-A FOSS Project by Oormi Creations
+A FOSS Project by Oormi Creations.
 
 http://oormi.in
+
+A limited support is available via email.
 
 oormicreations@gmail.com
 
