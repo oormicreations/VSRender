@@ -4,6 +4,11 @@ An addon for parallel rendering for video sequencer in blender.
 
 ---
 
+![logo](https://oormi.in/software/software_images/vsrenderthumb.jpg)
+
+---
+
+
 **Requirements**
 
 * Linux (_This addon was tested on Linux Mint 19_). Does not work on any other OS out of the box.
