@@ -67,10 +67,12 @@ When the render is over, click the **Join Parts** button to join them. This is u
 * It is tested on **gnome-terminal** only. If you use some other terminal, and it is not working, please edit the code suitably.
 * It uses the default 0 padding in frame numbers. If you changed it, it won't recognize the file part renders to join.
 * It will not recognize the parts if a file name prefix was set in the output render path, or if zero padding characters (e.g. ####) are set there. This is not an issue btw.
+* Tip : Check in blender python console for helpful messages.
 * **Always save your stuff!**
 
 **What is new in version 0.2.0**
 * Sanity checks for output path
+* Supports relative paths
 * Supports more terminal types
 * Sets script permissions to rwx
 * Some minor improvements
