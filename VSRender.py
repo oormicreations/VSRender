@@ -4,15 +4,15 @@
 
 bl_info = {
     "name": "VS Render",
-    "description": "VS Parallel Render by Oormi Creations",
+    "description": "Renders the video sequencer in parallel utilizing all cores",
     "author": "Oormi Creations",
-    "version": (0, 1, 1),
+    "version": (0, 2, 0),
     "blender": (2, 80, 0),
     "location": "Video Sequencer > VS Render",
     "warning": "", # used for warning icon and text in addons panel
-    "wiki_url": "",
-    "tracker_url": "",
-    "category": "Development"
+    "wiki_url": "https://github.com/oormicreations/VSRender",
+    "tracker_url": "https://github.com/oormicreations/VSRender",
+    "category": "Sequencer"
 }
 
 import bpy
@@ -32,6 +32,7 @@ from bpy.types import (Panel,
                        )
 
 import os
+import stat
 from bpy import context
 import codecs
 import shutil
@@ -42,6 +43,7 @@ ranges = []
 sframes = []
 eframes = []   
 issplit = False
+
 
 def ShowMessageBox(message = "", title = "VS Render Says...", icon = 'INFO'):
 
@@ -66,8 +68,28 @@ def printconsole(data, tag = "VS: "):
 def pc(data, tag = "VS: "):
    printconsole(data, tag)
 
+def getrenderoutputpath():
+    #check output path
+    outpath =   bpy.context.scene.render.filepath
+    
+    if outpath == "/tmp/" or outpath == "":
+        ShowMessageBox("Please set an Ouput path in Properties panel > Output Properties > Output")
+        return None
+    if outpath[-1] != "/":
+        ShowMessageBox("Please set an Ouput path in Properties panel > Output Properties > Output and ensure that the path exists and that there is no file name prefix in the end of the path (It should have / as last character)")
+        return None
+    
+    if outpath.find("//") >=0:
+        outpath = bpy.path.abspath(outpath)
+    
+    return outpath
 
 def splitparts(nparts, tool):
+
+    outpath = getrenderoutputpath()
+    if outpath == None:
+        return
+        
     fstart = bpy.context.scene.frame_start
     fend = bpy.context.scene.frame_end
     nframes = fend - fstart + 1
@@ -120,7 +142,6 @@ def splitparts(nparts, tool):
     blendexe = blendexe.replace(" ", "\ ")
     blendfilepath = blendfilepath.replace(" ", "\ ")
     
-    outpath =   bpy.context.scene.render.filepath
     
     shscript = "#!/bin/bash\n\
 echo \"" + blendexe + "\"\n\
@@ -137,23 +158,43 @@ echo \"VSE Render : Part %&#3 Render Done\""
         shstr = shstr.replace("%&#2", str(eframes[n]))
         shstr = shstr.replace("%&#3", str(n + 1))
         
-        temp = codecs.open(outpath + ranges[n] + ".sh", "w", "utf-8")
+        shfile = outpath + ranges[n] + ".sh"
+        temp = codecs.open(shfile, "w", "utf-8")
         temp.write(shstr)
         temp.close()
+        os.chmod(shfile, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
+        printconsole(shfile)
 
 
 
-def startrender(term):
+def startrender(term, ttype, tcmd):
     global ranges
     global sframes
     global eframes
+
+    outpath = getrenderoutputpath()
+    if outpath == None:
+        return
     
     pc(len(ranges), "Start render ranges")
-    outpath =  bpy.context.scene.render.filepath
 
     if term:
+        
         for n in range(0, len(ranges)):
-            shstr = "gnome-terminal --title=Rendering_Section_" + ranges[n] + " --command=\"bash -c './" + ranges[n] + ".sh;'\""
+            shstr = ""
+            if ttype=="GN":
+                shstr = "gnome-terminal --title=Rendering_Section_" + ranges[n] + " --command=\"bash -c './" + ranges[n] + ".sh;'\""
+            if ttype=="XF":
+                shstr = "xfce4-terminal --title=Rendering_Section_" + ranges[n] + " --command=\"bash -c './" + ranges[n] + ".sh;'\""
+            if ttype=="KN":
+                shstr = "konsole --title=Rendering_Section_" + ranges[n] + " --command=\"bash -c './" + ranges[n] + ".sh;'\""
+            if ttype=="EM":
+                shstr = "x-terminal-emulator --title=Rendering_Section_" + ranges[n] + " --command=\"bash -c './" + ranges[n] + ".sh;'\""
+            if ttype=="SB":
+                shstr = tcmd.replace("$scriptname", ranges[n] + ".sh")
+                pc(shstr)
+                #shstr = gnome-terminal --command="bash -c './$scriptname;'" # This works for example
+            
             print(os.getcwd())
             os.chdir(outpath)
             print(os.getcwd())
@@ -168,12 +209,13 @@ def startrender(term):
 
 
 def concat(tool):
+    outpath = getrenderoutputpath()
+    if outpath == None:
+        return
+
     tool.vsr_res = "Concat in progress..."
     ext = tool.vsr_ffmpegext
     ext = ext.replace(".", "")
-    
-    outpath = bpy.context.scene.render.filepath
-    printconsole(outpath)
     
     global ranges
     global sframes
@@ -209,8 +251,14 @@ def concat(tool):
 
 
 
-#liststr = "file 0001-0050.mkv\nfile 0051-0100.mkv\nfile 0101-0250.mkv"
-#concat(liststr)
+def on_update_parts(self, context):
+    context.scene.vsr_tool.vsr_partframes = 0
+    context.scene.vsr_tool.vsr_partframeslast = 0
+    
+def on_update_termcmd(self, context):
+    context.scene.vsr_tool.vsr_termen = context.scene.vsr_tool.vsr_ttype == "SB"
+    pc(context.scene.vsr_tool.vsr_termen)
+
 
 ####################################################################
 
@@ -226,7 +274,7 @@ class CRP_OT_CRenderParts(bpy.types.Operator):
 
         pc(issplit)
         if issplit:
-            startrender(vsrtool.vsr_term)
+            startrender(vsrtool.vsr_term, vsrtool.vsr_ttype, vsrtool.vsr_termcmd)
         else:
             ShowMessageBox("Please Split into parts before rendering!")
         
@@ -278,7 +326,7 @@ class CCC_OT_CConCat(bpy.types.Operator):
     
 class OBJECT_PT_VSPanel(bpy.types.Panel):
 
-    bl_label = "VS Render 0.1.1"
+    bl_label = "VS Render 0.2.0"
     bl_idname = "OBJECT_PT_VS_Panel2"
     bl_category = "VS Render"
     bl_space_type = 'SEQUENCE_EDITOR'
@@ -298,6 +346,11 @@ class OBJECT_PT_VSPanel(bpy.types.Panel):
         layout.label(text = "Last Part Frame Count : " + str(vsrtool.vsr_partframeslast))
         layout.label(text = " ")
         layout.prop(vsrtool, "vsr_term")
+        layout.prop(vsrtool, "vsr_ttype")
+        row = layout.row(align=True)
+        row.enabled = vsrtool.vsr_termen
+        row.prop(vsrtool, "vsr_termcmd")
+        
         layout.operator("render.parts", text = "Parallel Render", icon='RENDER_ANIMATION')
         layout.label(text = " ")
         layout.prop(vsrtool, "vsr_outfilename")
@@ -335,7 +388,8 @@ class CCProperties(PropertyGroup):
         description = "Number of parts to split into. (= Number of parallel renders)",
         default = 8,
         min=1,
-        max=256        
+        max=256,
+        update=on_update_parts        
       )   
     
     vsr_partframes: IntProperty(
@@ -362,8 +416,28 @@ class CCProperties(PropertyGroup):
         default = " "
       )
 
+    vsr_ttype: EnumProperty(
+        items = [('GN', 'Gnome', 'Terminal type gnome'), 
+                 ('KN', 'Konsole', 'Terminal type Konsole'),
+                 ('XF', 'Xfce4', 'Terminal type xfce'),
+                 ('EM', 'Generic', 'Terminal type generic'),
+                 ('SB', 'Specified Below', "Terminal type as specified below")],
+        name = "Terminal",
+        update = on_update_termcmd        
+    )
+        
+    vsr_termcmd: StringProperty(
+        name = "Term Cmd",
+        description = "Terminal Command for your specific terminal",
+        default = "Write the command to launch the shellscripts here with a $scriptname as standin for script name"
 
-
+      )
+    
+    vsr_termen: BoolProperty(
+        name = "Enable Terminal Cmd",
+        description = "En",
+        default = False
+    )
     
 # ------------------------------------------------------------------------
 #    Registration
